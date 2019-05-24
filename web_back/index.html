@@ -57,7 +57,26 @@
         <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0"
             scrolling="auto"></iframe>
     </div>
-
+    <!-- 模态框 -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Order</h4>
+                </div>
+                <div class="modal-body">
+                    请确认是否要退出登录
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                    <button type="button" class="btn mybtn-cancel">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
@@ -111,6 +130,28 @@
                 $('.level02').children().eq(n).addClass('active').siblings().removeClass('active');
             }
         }
+        //设置点击‘取消’按钮关闭提示框
+        $('.mybtn-cancel').on('click', function () {
+            $('#myModal').modal('hide')
+        })
+        $('.btn-default').on('click', function () {
+            window.location.href = './login.html'
+        })
+        //点击‘退出’弹出提示框
+        $('.icon-tuichu').parent().on('click', function () {
+
+            $.ajax({
+                url: 'https://autumnfish.cn/big/admin/logout', //接口地址
+                type: 'POST', //请求的方法POST/GET
+                dataType: 'json',
+                success: function (backData) {
+                    $('#myModal').modal('show')
+                    //确认退出后跳转到登录界面
+
+                },
+            })
+
+        })
     </script>
 
 </body>
