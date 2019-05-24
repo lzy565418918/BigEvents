@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/js/bootstrap.min.js">
 </head>
 
 <body>
@@ -29,8 +30,54 @@
             </form>
         </div>
 
-    </div> 
+    </div>
 
 </body>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script>
+    $(function () {
+        $('.input_sub').on('click', function (e) {
+            //阻止默认行为
+            e.preventDefault()
+            //获取用户名
+            var user_name = $('.input_txt').val().trim()
+            //获取密码
+            var password = $('.input_pass').val().trim()
+            //判断账号密码是否填写
+            if (user_name == '' || password == '') {
+                        alert('请输入完整的用户名和密码')
+                        $('.input_txt').val('')
+                        $('.input_pass').val('')
+                        return
+                    } 
+            //调用接口
+            $.ajax({
+                url: 'https://autumnfish.cn/big/admin/login', //接口地址
+                data: {
+                    user_name: user_name,
+                    password: password
+                }, //数据可以写对象
+                type: 'POST', //请求的方法POST/GET
+                //   dataType: 'json',
+                success: function (backData) {
+                    //判断账号密码是否正确
+                    if (backData.code == 400) {
+                        alert(backData.msg)
+                        //弹窗提示错误后，清空文本框
+                        $('.input_txt').val('')
+                        $('.input_pass').val('')
+                        return
+
+                    } else if (backData.code == 200) {
+                        alert(backData.msg)
+                        //登陆成功后跳转至首页
+                        window.location.href = './index.html'
+                    }
+
+                },
+            })
+        })
+    })
+</script>
 
 </html>
