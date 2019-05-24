@@ -71,8 +71,9 @@
                     请确认是否要退出登录
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
-                    <button type="button" class="btn mybtn-cancel">取消</button>
+                    <button type="button" class="btn btn-default mybtn-cancel" data-dismiss="modal">取消</button>
+                    <!-- <button type="button" class="btn mybtn-cancel">取消</button> -->
+                    <button type="button" class="btn btn-primary">确定</button>
                 </div>
             </div>
         </div>
@@ -134,7 +135,7 @@
         $('.mybtn-cancel').on('click', function () {
             $('#myModal').modal('hide')
         })
-        $('.btn-default').on('click', function () {
+        $('.btn-primary').on('click', function () {
             window.location.href = './login.html'
         })
         //点击‘退出’弹出提示框
