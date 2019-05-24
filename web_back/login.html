@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -29,8 +30,103 @@
             </form>
         </div>
 
-    </div> 
+    </div>
+    <!-- 模态框 -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Login Information</h4>
+                </div>
+                <div class="modal-body">
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        //当页面加载完毕后，给‘用户名’输入框自动获取焦点
+        $(window).on('load', function () {
+            $('.input_txt').trigger('focus')
+        })
+        $('.input_sub').on('click', function (e) {
+            //阻止默认行为
+            e.preventDefault()
+            //获取用户名
+            var user_name = $('.input_txt').val().trim()
+            //获取密码
+            var password = $('.input_pass').val().trim()
+            //判断账号密码是否填写
+            if (user_name == '' || password == '') {
+                // alert('请输入完整的用户名和密码')
+                $('.modal-body').text('请输入完整的用户名和密码')
+                $('#myModal').modal()
+                $('.input_txt').val('')
+                $('.input_pass').val('')
+                $('#myModal').keyup(function (e) {
+                    if (e.keyCode == 13) {
+                        $(this).modal('hide')
+
+                    }
+                })
+                return
+            }
+            //调用接口
+            $.ajax({
+                url: 'https://autumnfish.cn/big/admin/login', //接口地址
+                data: {
+                    user_name: user_name,
+                    password: password
+                }, //数据可以写对象
+                type: 'POST', //请求的方法POST/GET
+                //   dataType: 'json',
+                success: function (backData) {
+                    //判断账号密码是否正确
+                    if (backData.code == 400) {
+                        // alert(backData.msg)
+                        $('.modal-body').text(backData.msg)
+                        $('#myModal').modal()
+                        //弹窗提示错误后，清空文本框
+                        $('.input_txt').val('')
+                        $('.input_pass').val('')
+                        $('#myModal').keyup(function (e) {
+                            if (e.keyCode == 13) {
+                                $(this).modal('hide')
+
+                            }
+                        })
+                        return
+
+                    } else if (backData.code == 200) {
+                        $('.modal-body').text(backData.msg)
+                        $('#myModal').modal('show')
+                        $('#myModal').keyup(function (e) {
+                            if (e.keyCode == 13) {
+                                window.location.href = './index.html'
+
+                            }
+                        })
+                        // alert(backData.msg)
+                        //登陆成功后跳转至首页
+                        $('.btn-default').on('click', function () {
+                            window.location.href = './index.html'
+                        })
+                    }
+
+                },
+            })
+        })
+    })
+</script>
 
 </html>
