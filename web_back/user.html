@@ -105,7 +105,7 @@
 
         //获取用户信息
         $.ajax({
-            url: 'https://autumnfish.cn/big/admin/userinfo_get', //接口地址
+            url: 'https://autumnfish.cn/big32/admin/userinfo_get', //接口地址
             // data: {}, //数据可以写对象
             type: 'get', //请求的方法POST/GET
             dataType: 'json',
@@ -114,74 +114,35 @@
                 for (var key in backData.data) {
                     $('.' + key).val(backData.data[key])
                 }
-                $('.user_pic').attr('src',backData.data.user_pic)
+                $('.user_pic').attr('src', backData.data.user_pic)
             }
-            //     $('.btn-success').on('click', function (e) {
-            //         e.preventDefault()
-
-            //         // for(var key in backData.data){
-            //         // console.log(key);
-
-            //         //  $('.'+key).val(backData.data[key])}
-
-
-
-            //         //修改用户信息
-            //         $.ajax({
-            //             url: 'https://autumnfish.cn/big/admin/userinfo_edit', //接口地址
-            //             data: {
-            //                 username: username,
-            //                 nickname: nickname,
-            //                 email: email,
-            //                 user_pic: user_pic,
-            //                 password: ''
-            //             }, //数据可以写对象
-            //             type: 'post', //请求的方法POST/GET
-            //             dataType: 'json',
-            //             success: function (changeMsg) {
-            //                 $('.username').attr('value', username)
-            //                 console.log(username);
-
-            //                 $('.nickname').attr('value', nickname)
-            //                 console.log(nickname);
-
-            //                 $('.email').attr('value', email)
-            //                 $('.user_pic').attr('value', user_pic)
-            //                 $('.password').attr('value', password)
-            //                 console.log(changeMsg);
-            //                 // if (password == backData.data.password) {
-            //                 //     $('.modal-body').text('请输入新密码')
-            //                 //     $('#myModal').modal('show')
-            //                 // } else if (changeMsg.code == 200) {
-            //                 //     $('.modal-body').text(changeMsg.msg)
-            //                 //     $('#myModal').modal('show')
-            //                 // }
-            //                 // $.ajax({
-            //                 //  url:'https://autumnfish.cn/big/admin/userinfo_edit',//接口地址
-            //                 // // data:{},//数据可以写对象
-            //                 //   type:'get',//请求的方法POST/GET
-            //                 //   dataType: 'json',
-            //                 // success:function(getData){
-
-            //                 //   },
-            //                 // })
-
-            //             },
-            //         })
-
-
-            //     })
-
-            // }
-            // var username = $('.username').val()
-            // var nickname = $('.nickname').val()
-            // var email = $('.email').val()
-            // var user_pic = $('.user_pic').val()
-            // var password = $('.password').val()
-
 
         })
 
+    })
+
+    $('#exampleInputFile').change(function(){
+        var file=this.files[0]
+        var url=URL.createObjectURL(file)
+        console.log(this);
+        
+        $('.user_pic').attr('src',url)
+    })
+    $('.btn-success').on('click', function (e) {
+        e.preventDefault()
+        var formData = new FormData($('form')[0])
+        console.log($('form')[0]);
+        
+        $.ajax({
+            url: 'https://autumnfish.cn/big32/admin/userinfo_edit', //接口地址
+            data: formData, //数据可以写对象
+            type: 'post', //请求的方法POST/GET
+            contentType:false,
+            processData:false,
+            success: function (backData) {
+                console.log(backData);
+            },
+        })
     })
 </script>
 
