@@ -143,10 +143,19 @@
             alert('添加成功');
             $('#addModal').modal('hide');
         });
-
+        // 编辑文章类别
+        // 请求地址：https://autumnfish.cn/big32/admin/category_edit
+        // 请求方式：post
+        // 请求参数：id name slug
         $('.category_table').delegate('a', 'click', function () {
             if ($(this).hasClass('btn-info')) {
                 $('#addModal .modal-title').html('修改分类名称');
+                //让文本框显示name
+                var name = $(this).prev().prev().text()
+                $('.recipient-name').val(name)
+                //让文本框显示slug
+                var slug =$(this).prev().text()
+                $('.recipient-ename').val(slug)
                 $('#addModal').modal('show');
             }
         })
@@ -236,8 +245,8 @@
                     console.log(id);
                     // 弹窗确认是否删除
                     $('#myModal').modal('show')
-                    $('#myModal').keyup(function(e){
-                        if(e.keyCode==13){
+                    $('#myModal').keyup(function (e) {
+                        if (e.keyCode == 13) {
                             $('.my-confirm').click()
                         }
                     })
@@ -257,40 +266,15 @@
                             },
                         })
                     })
-
-
-
-                    // alert(1)
                 }
             })
 
 
-            // $('#delete').click(function(e){
-            //     e.preventDefault()
-            //     alert(1)
-            //     console.log(1);
 
-            // })
-            //     $('.btn-danger').on('click', function () {
-            //         // $('#addModal').modal('show');
-            //         console.log(1);
+            //添加文章类别编辑功能
 
-            //         var id = $(this).parent().parent().attr('numid')
-            //         console.log(id);
 
-            //         $.ajax({
-            //             url: 'https://autumnfish.cn/big32/admin/category_delete', //接口地址
-            //             data: {
-            //                 id: id
-            //             }, //数据可以写对象
-            //             type: 'POST', //请求的方法POST/GET
-            //             //   dataType: 'json',
-            //             success: function (backData) {
-            //                 console.log(backData);
 
-            //             },
-            //         })
-            //     })
         })
     </script>
 </body>
