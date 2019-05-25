@@ -111,56 +111,67 @@
             dataType: 'json',
             success: function (backData) {
                 console.log(backData)
-                $('.btn-success').on('click', function (e) {
-                    e.preventDefault()
+                for (var key in backData.data) {
+                    $('.' + key).val(backData.data[key])
+                }
+                $('.user_pic').attr('src',backData.data.user_pic)
+            //     $('.btn-success').on('click', function (e) {
+            //         e.preventDefault()
+
+            //         // for(var key in backData.data){
+            //         // console.log(key);
+
+            //         //  $('.'+key).val(backData.data[key])}
 
 
-                    var username = $('.username').val()
-                    var nickname = $('.nickname').val()
-                    var email = $('.email').val()
-                    var user_pic = $('.user_pic').val()
-                    var password = $('.password').val()
+
+            //         //修改用户信息
+            //         $.ajax({
+            //             url: 'https://autumnfish.cn/big/admin/userinfo_edit', //接口地址
+            //             data: {
+            //                 username: username,
+            //                 nickname: nickname,
+            //                 email: email,
+            //                 user_pic: user_pic,
+            //                 password: ''
+            //             }, //数据可以写对象
+            //             type: 'post', //请求的方法POST/GET
+            //             dataType: 'json',
+            //             success: function (changeMsg) {
+            //                 $('.username').attr('value', username)
+            //                 console.log(username);
+
+            //                 $('.nickname').attr('value', nickname)
+            //                 console.log(nickname);
+
+            //                 $('.email').attr('value', email)
+            //                 $('.user_pic').attr('value', user_pic)
+            //                 $('.password').attr('value', password)
+            //                 console.log(changeMsg);
+            //                 // if (password == backData.data.password) {
+            //                 //     $('.modal-body').text('请输入新密码')
+            //                 //     $('#myModal').modal('show')
+            //                 // } else if (changeMsg.code == 200) {
+            //                 //     $('.modal-body').text(changeMsg.msg)
+            //                 //     $('#myModal').modal('show')
+            //                 // }
+            //                 // $.ajax({
+            //                 //  url:'https://autumnfish.cn/big/admin/userinfo_edit',//接口地址
+            //                 // // data:{},//数据可以写对象
+            //                 //   type:'get',//请求的方法POST/GET
+            //                 //   dataType: 'json',
+            //                 // success:function(getData){
+
+            //                 //   },
+            //                 // })
+
+            //             },
+            //         })
 
 
+            //     })
 
-                    //修改用户信息
-                    $.ajax({
-                        url: 'https://autumnfish.cn/big/admin/userinfo_edit', //接口地址
-                        data: {
-                            username: username,
-                            nickname: nickname,
-                            email: email,
-                            user_pic: user_pic,
-                            password: ''
-                        }, //数据可以写对象
-                        type: 'post', //请求的方法POST/GET
-                        dataType: 'json',
-                        success: function (changeMsg) {
-                            $('.username').attr('value',username)
-                            console.log(username);
-                            
-                            $('.nickname').attr('value',nickname)
-                            console.log(nickname);
-                            
-                            $('.email').attr('value',email)
-                            $('.user_pic').attr('value',user_pic)
-                            $('.password').attr('value',password)
-                            console.log(changeMsg);
-                            // if (password == backData.data.password) {
-                            //     $('.modal-body').text('请输入新密码')
-                            //     $('#myModal').modal('show')
-                            // } else if (changeMsg.code == 200) {
-                            //     $('.modal-body').text(changeMsg.msg)
-                            //     $('#myModal').modal('show')
-                            // }
-
-                        },
-                    })
-
-
-                })
-
-            }
+            // }
             // var username = $('.username').val()
             // var nickname = $('.nickname').val()
             // var email = $('.email').val()
