@@ -106,6 +106,27 @@
             </div>
         </div>
     </div>
+    <!-- 模态框 -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Order</h4>
+                </div>
+                <div class="modal-body">
+                    请确认是否删除
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default mybtn-cancel" data-dismiss="modal">取消</button>
+                    <!-- <button type="button" class="btn mybtn-cancel">取消</button> -->
+                    <button type="button" class="btn btn-primary my-confirm">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="./js/template-web.js"></script>
     <script>
         $('#addModal').modal({
@@ -133,13 +154,12 @@
     <!-- 准备一个模板 -->
     <script id="tem" type="text/html">
         {{each data}}
-        <tr>
+        <tr numID="{{$value.id}}">
             <td>{{$value.name}}</td>
             <td>{{$value.slug}}</td>
             <td class="text-center">
-                <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
-                    class="btn btn-info btn-xs">编辑</a>
-                <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
+                <a href="javascript:;" id="delete" class="btn btn-danger btn-xs">删除</a>
             </td>
         </tr>
         {{/each}}
@@ -201,6 +221,76 @@
                 })
             })
 
+
+            // 删除文章类别
+            // 请求地址：https://autumnfish.cn/big32/admin/·
+            // 请求方式：post
+            // 请求参数：id	number	类别id
+
+            //事件委托
+            $('.category_table').delegate('a', 'click', function () {
+                //选中“删除”按钮
+                if ($(this).hasClass('btn-danger')) {
+                    //获取属性名为“numid”的值，用来传递参数数据
+                    var id = $(this).parent().parent().attr('numid')
+                    console.log(id);
+                    // 弹窗确认是否删除
+                    $('#myModal').modal('show')
+                    $('#myModal').keyup(function(e){
+                        if(e.keyCode==13){
+                            $('.my-confirm').click()
+                        }
+                    })
+                    $('.my-confirm').on('click', function () {
+                        //调用删除文章类别接口
+                        $.ajax({
+                            url: 'https://autumnfish.cn/big32/admin/category_delete', //接口地址
+                            data: {
+                                id: id
+                            }, //数据可以写对象
+                            type: 'POST', //请求的方法POST/GET
+                            //   dataType: 'json',
+                            success: function (backData) {
+                                console.log(backData);
+                                getClassName()
+                                $('#myModal').modal('hide')
+                            },
+                        })
+                    })
+
+
+
+                    // alert(1)
+                }
+            })
+
+
+            // $('#delete').click(function(e){
+            //     e.preventDefault()
+            //     alert(1)
+            //     console.log(1);
+
+            // })
+            //     $('.btn-danger').on('click', function () {
+            //         // $('#addModal').modal('show');
+            //         console.log(1);
+
+            //         var id = $(this).parent().parent().attr('numid')
+            //         console.log(id);
+
+            //         $.ajax({
+            //             url: 'https://autumnfish.cn/big32/admin/category_delete', //接口地址
+            //             data: {
+            //                 id: id
+            //             }, //数据可以写对象
+            //             type: 'POST', //请求的方法POST/GET
+            //             //   dataType: 'json',
+            //             success: function (backData) {
+            //                 console.log(backData);
+
+            //             },
+            //         })
+            //     })
         })
     </script>
 </body>
