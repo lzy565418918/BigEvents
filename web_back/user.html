@@ -122,9 +122,11 @@
     })
 
     $('#exampleInputFile').change(function(){
+        // console.log(this.files);
+        //files是文件类型的一个属性
         var file=this.files[0]
         var url=URL.createObjectURL(file)
-        console.log(this);
+        // console.log(this);
         
         $('.user_pic').attr('src',url)
     })
