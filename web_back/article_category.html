@@ -186,6 +186,9 @@
                 //点击 新增类别 清空文本框
                 $('#recipient-name').val('')
                 $('#recipient-ename').val('')
+                $('#addModal .modal-title').html('新增分类');
+                $('#model_add').text('新增')
+
                 //新增文章分类
                 // 请求地址：https://autumnfish.cn/big32/admin/category_add
                 // 请求方式：post
@@ -197,8 +200,8 @@
                     var name = $('#recipient-name').val()
                     //获取文章别名
                     var slug = $('#recipient-ename').val()
-                    console.log(name ,slug);
-                    
+                    console.log(name, slug);
+
                     //调用接口，添加文章类名别名
                     $.ajax({
                         url: 'https://autumnfish.cn/big32/admin/category_add', //接口地址
@@ -314,12 +317,12 @@
                             success: function (backData) {
                                 // alert(backData.msg);
                                 $('#addModal').modal('hide');
-                                $('#model_add').text('新增')
 
                                 getClassName()
 
                             },
                         })
+
 
                     })
                 }
