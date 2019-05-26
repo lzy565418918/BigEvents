@@ -134,31 +134,15 @@
             backdrop: false
         });
 
-        $('#model_shutoff').click(function () {
-            // alert('shutoff');
-            $('#addModal').modal('hide');
-        });
+        // $('#model_shutoff').click(function () {
+        //     // alert('shutoff');
+        //     $('#addModal').modal('hide');
+        // });
 
-        $('#model_add').click(function () {
-            alert('添加成功');
-            $('#addModal').modal('hide');
-        });
-        // 编辑文章类别
-        // 请求地址：https://autumnfish.cn/big32/admin/category_edit
-        // 请求方式：post
-        // 请求参数：id name slug
-        $('.category_table').delegate('a', 'click', function () {
-            if ($(this).hasClass('btn-info')) {
-                $('#addModal .modal-title').html('修改分类名称');
-                //让文本框显示name
-                var name = $(this).prev().prev().text()
-                $('.recipient-name').val(name)
-                //让文本框显示slug
-                var slug =$(this).prev().text()
-                $('.recipient-ename').val(slug)
-                $('#addModal').modal('show');
-            }
-        })
+        // $('#model_add').click(function () {
+        //     alert('添加成功');
+        //     $('#addModal').modal('hide');
+        // });
     </script>
     <!-- 准备一个模板 -->
     <script id="tem" type="text/html">
@@ -167,7 +151,7 @@
             <td>{{$value.name}}</td>
             <td>{{$value.slug}}</td>
             <td class="text-center">
-                <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
+                <a href="javascript:;" id="edit" class="btn btn-info btn-xs">编辑</a>
                 <a href="javascript:;" id="delete" class="btn btn-danger btn-xs">删除</a>
             </td>
         </tr>
@@ -197,38 +181,47 @@
             //默认调用一次
             getClassName()
 
-
-
-            //新增文章分类
-            // 请求地址：https://autumnfish.cn/big32/admin/category_add
-            // 请求方式：post
-            // 请求参数
-            // name	string	类别名称
-            // slug	string	别名
-            $('#model_add').on('click', function () {
-                //获取文章类名
-                var name = $('#recipient-name').val()
-                //获取文章别名
-                var slug = $('#recipient-ename').val()
-                //调用接口，添加文章类名别名
-                $.ajax({
-                    url: 'https://autumnfish.cn/big32/admin/category_add', //接口地址
-                    data: {
-                        name: name,
-                        slug: slug
-                    }, //数据可以写对象
-                    type: 'POST', //请求的方法POST/GET
-                    dataType: 'json',
-                    success: function (backData) {
-                        console.log(backData);
-                        //添加完以后获取一次文章类名信息
-                        getClassName()
-                        //添加完以后清空输入框
-                        $('#recipient-name').val('')
-                        $('#recipient-ename').val('')
-                    },
+            //给 新增类别 添加点击事件
+            $('.btn-success').click(function () {
+                //点击 新增类别 清空文本框
+                $('#recipient-name').val('')
+                $('#recipient-ename').val('')
+                //新增文章分类
+                // 请求地址：https://autumnfish.cn/big32/admin/category_add
+                // 请求方式：post
+                // 请求参数
+                // name	string	类别名称
+                // slug	string	别名
+                $('#model_add').on('click', function () {
+                    //获取文章类名
+                    var name = $('#recipient-name').val()
+                    //获取文章别名
+                    var slug = $('#recipient-ename').val()
+                    //调用接口，添加文章类名别名
+                    $.ajax({
+                        url: 'https://autumnfish.cn/big32/admin/category_add', //接口地址
+                        data: {
+                            name: name,
+                            slug: slug
+                        }, //数据可以写对象
+                        type: 'POST', //请求的方法POST/GET
+                        dataType: 'json',
+                        success: function (backData) {
+                            console.log(backData);
+                            //添加完以后获取一次文章类名信息
+                            getClassName()
+                            //添加完以后清空输入框并隐藏
+                            $('#recipient-name').val('')
+                            $('#recipient-ename').val('')
+                            $('#addModal').modal('hide');
+                        },
+                    })
                 })
+
+
+
             })
+
 
 
             // 删除文章类别
@@ -241,8 +234,8 @@
                 //选中“删除”按钮
                 if ($(this).hasClass('btn-danger')) {
                     //获取属性名为“numid”的值，用来传递参数数据
-                    var id = $(this).parent().parent().attr('numid')
-                    console.log(id);
+                    var id_delete = $(this).parent().parent().attr('numid')
+                    console.log(id_delete);
                     // 弹窗确认是否删除
                     $('#myModal').modal('show')
                     $('#myModal').keyup(function (e) {
@@ -255,7 +248,7 @@
                         $.ajax({
                             url: 'https://autumnfish.cn/big32/admin/category_delete', //接口地址
                             data: {
-                                id: id
+                                id: id_delete
                             }, //数据可以写对象
                             type: 'POST', //请求的方法POST/GET
                             //   dataType: 'json',
@@ -267,11 +260,83 @@
                         })
                     })
                 }
+                $('#edit')[0].on('click', function () {
+                    console.log(this)
+                    return false
+                })
+
+                // $('.category_table').on('click', function (e) {
+                //     // if ($(this).hasClass('btn-info')) {
+                //     // console.log(e.target);
+                //     var bj = e.target
+                //     //添加文章类别编辑功能
+                //     // 编辑文章类别
+                //     // 请求地址：https://autumnfish.cn/big32/admin/category_edit
+                //     // 请求方式：post
+                //     // 请求参数：id name slug
+                //     // 
+                //     //让文本框显示name,slug
+                //     var name = $(bj).parent().prev().prev().text()
+                //     $('#recipient-name').val(name)
+                //     //让文本框显示slug
+                //     var slug = $(bj).parent().prev().text()
+                //     $('#recipient-ename').val(slug)
+
+                //     var id = $(bj).parent().parent().attr('numid')
+                //     // console.log(id,name,slug);
+
+                //     // var id = $(this).parent().parent().attr('numid')
+                //     console.log(bj, id);
+                //     //     console.log(id);
+
+                //     //给 新增 增加点击事件
+                //     $('#addModal .modal-title').html('修改分类名称');
+                //     //把 新增 改成 修改
+                //     $('#model_add').text('确认修改')
+                //     $('#addModal').modal('show');
+                //     $('#model_shutoff').click(function () {
+                //         // alert('shutoff');
+                //         $('#addModal').modal('hide');
+                //     });
+                //     $('#model_add').on('click', function () {
+                //         // console.log(1);
+
+                //         //获取修改后的name和slug，和对应的id
+                //         name = $('#recipient-name').val()
+                //         slug = $('#recipient-ename').val()
+
+                //         // var id = $(that).parent().parent().attr('numid')
+                //         console.log(id, name, slug);
+
+                //         //调用接口
+                //         $.ajax({
+
+                //             url: 'https://autumnfish.cn/big32/admin/category_edit', //接口地址
+                //             data: {
+                //                 name: name,
+                //                 slug: slug,
+                //                 id: id
+                //             }, //数据可以写对象
+                //             type: 'post', //请求的方法POST/GET
+                //             dataType: 'json',
+                //             success: function (backData) {
+                //                 // alert(backData.msg);
+                //                 $('#addModal').modal('hide');
+                //                 $('#model_add').text('新增')
+
+                //                 getClassName()
+
+                //             },
+                //         })
+
+                //     })
+                //     // }
+                // })
+           
+           
             })
 
 
-
-            //添加文章类别编辑功能
 
 
 
