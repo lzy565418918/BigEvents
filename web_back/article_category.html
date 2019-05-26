@@ -134,10 +134,10 @@
             backdrop: false
         });
 
-        // $('#model_shutoff').click(function () {
-        //     // alert('shutoff');
-        //     $('#addModal').modal('hide');
-        // });
+        $('#model_shutoff').click(function () {
+            // alert('shutoff');
+            $('#addModal').modal('hide');
+        });
 
         // $('#model_add').click(function () {
         //     alert('添加成功');
@@ -192,11 +192,13 @@
                 // 请求参数
                 // name	string	类别名称
                 // slug	string	别名
-                $('#model_add').on('click', function () {
+                $('#model_add').off().on('click', function () {
                     //获取文章类名
                     var name = $('#recipient-name').val()
                     //获取文章别名
                     var slug = $('#recipient-ename').val()
+                    console.log(name ,slug);
+                    
                     //调用接口，添加文章类名别名
                     $.ajax({
                         url: 'https://autumnfish.cn/big32/admin/category_add', //接口地址
@@ -211,8 +213,6 @@
                             //添加完以后获取一次文章类名信息
                             getClassName()
                             //添加完以后清空输入框并隐藏
-                            $('#recipient-name').val('')
-                            $('#recipient-ename').val('')
                             $('#addModal').modal('hide');
                         },
                     })
@@ -230,9 +230,12 @@
             // 请求参数：id	number	类别id
 
             //事件委托
-            $('.category_table').delegate('a', 'click', function () {
+
+            $('.category_table').on('click', 'a', function (e) {
                 //选中“删除”按钮
                 if ($(this).hasClass('btn-danger')) {
+                    console.log(this);
+
                     //获取属性名为“numid”的值，用来传递参数数据
                     var id_delete = $(this).parent().parent().attr('numid')
                     console.log(id_delete);
@@ -243,7 +246,7 @@
                             $('.my-confirm').click()
                         }
                     })
-                    $('.my-confirm').on('click', function () {
+                    $('.my-confirm').off('click').on('click', function () {
                         //调用删除文章类别接口
                         $.ajax({
                             url: 'https://autumnfish.cn/big32/admin/category_delete', //接口地址
@@ -259,81 +262,74 @@
                             },
                         })
                     })
+                } else if ($(this).hasClass('btn-info')) {
+                    // console.log(e.target);
+                    var bj = e.target
+                    //添加文章类别编辑功能
+                    // 编辑文章类别
+                    // 请求地址：https://autumnfish.cn/big32/admin/category_edit
+                    // 请求方式：post
+                    // 请求参数：id name slug
+                    // 
+                    //让文本框显示name,slug
+                    var name = $(bj).parent().prev().prev().text()
+                    $('#recipient-name').val(name)
+                    //让文本框显示slug
+                    var slug = $(bj).parent().prev().text()
+                    $('#recipient-ename').val(slug)
+
+                    var id = $(bj).parent().parent().attr('numid')
+                    // console.log(id,name,slug);
+
+                    // var id = $(this).parent().parent().attr('numid')
+                    console.log(bj, id);
+                    //     console.log(id);
+
+                    //给 新增 增加点击事件
+                    $('#addModal .modal-title').html('修改分类名称');
+                    //把 新增 改成 修改
+                    $('#model_add').text('确认修改')
+                    $('#addModal').modal('show');
+                    $('#model_add').off('click').on('click', function () {
+                        // console.log(1);
+
+                        //获取修改后的name和slug，和对应的id
+                        name = $('#recipient-name').val()
+                        slug = $('#recipient-ename').val()
+
+                        // var id = $(that).parent().parent().attr('numid')
+                        console.log(id, name, slug);
+
+                        //调用接口
+                        $.ajax({
+
+                            url: 'https://autumnfish.cn/big32/admin/category_edit', //接口地址
+                            data: {
+                                name: name,
+                                slug: slug,
+                                id: id
+                            }, //数据可以写对象
+                            type: 'post', //请求的方法POST/GET
+                            dataType: 'json',
+                            success: function (backData) {
+                                // alert(backData.msg);
+                                $('#addModal').modal('hide');
+                                $('#model_add').text('新增')
+
+                                getClassName()
+
+                            },
+                        })
+
+                    })
                 }
-                $('#edit')[0].on('click', function () {
-                    console.log(this)
-                    return false
-                })
+
+
 
                 // $('.category_table').on('click', function (e) {
-                //     // if ($(this).hasClass('btn-info')) {
-                //     // console.log(e.target);
-                //     var bj = e.target
-                //     //添加文章类别编辑功能
-                //     // 编辑文章类别
-                //     // 请求地址：https://autumnfish.cn/big32/admin/category_edit
-                //     // 请求方式：post
-                //     // 请求参数：id name slug
-                //     // 
-                //     //让文本框显示name,slug
-                //     var name = $(bj).parent().prev().prev().text()
-                //     $('#recipient-name').val(name)
-                //     //让文本框显示slug
-                //     var slug = $(bj).parent().prev().text()
-                //     $('#recipient-ename').val(slug)
-
-                //     var id = $(bj).parent().parent().attr('numid')
-                //     // console.log(id,name,slug);
-
-                //     // var id = $(this).parent().parent().attr('numid')
-                //     console.log(bj, id);
-                //     //     console.log(id);
-
-                //     //给 新增 增加点击事件
-                //     $('#addModal .modal-title').html('修改分类名称');
-                //     //把 新增 改成 修改
-                //     $('#model_add').text('确认修改')
-                //     $('#addModal').modal('show');
-                //     $('#model_shutoff').click(function () {
-                //         // alert('shutoff');
-                //         $('#addModal').modal('hide');
-                //     });
-                //     $('#model_add').on('click', function () {
-                //         // console.log(1);
-
-                //         //获取修改后的name和slug，和对应的id
-                //         name = $('#recipient-name').val()
-                //         slug = $('#recipient-ename').val()
-
-                //         // var id = $(that).parent().parent().attr('numid')
-                //         console.log(id, name, slug);
-
-                //         //调用接口
-                //         $.ajax({
-
-                //             url: 'https://autumnfish.cn/big32/admin/category_edit', //接口地址
-                //             data: {
-                //                 name: name,
-                //                 slug: slug,
-                //                 id: id
-                //             }, //数据可以写对象
-                //             type: 'post', //请求的方法POST/GET
-                //             dataType: 'json',
-                //             success: function (backData) {
-                //                 // alert(backData.msg);
-                //                 $('#addModal').modal('hide');
-                //                 $('#model_add').text('新增')
-
-                //                 getClassName()
-
-                //             },
-                //         })
-
-                //     })
-                //     // }
                 // })
-           
-           
+
+
             })
 
 
