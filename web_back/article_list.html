@@ -13,6 +13,7 @@
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="./js/template-web.js"></script>
     <script src="./js/jquery.twbsPagination.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -83,6 +84,28 @@
             </div>
 
         </div>
+        <!-- 模态框 -->
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Order</h4>
+                    </div>
+                    <div class="modal-body">
+                        请确认是否删除
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default mybtn-cancel" data-dismiss="modal">取消</button>
+                        <!-- <button type="button" class="btn mybtn-cancel">取消</button> -->
+                        <button type="button" class="btn btn-primary my-confirm">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -110,7 +133,7 @@
             <td class="text-center">{{v.state}}</td>
             <td class="text-center">
                 <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:deleteTr({{v.id}});" class="btn btn-danger btn-xs">删除</a>
             </td>
         </tr>
         {{/each}}
@@ -134,8 +157,6 @@
                 },
             })
 
-
-
             // 文章搜索
             // 请求地址：http://localhost:8000/admin/search
             // 请求方式：get
@@ -146,6 +167,7 @@
             // page	    number	当前页，为空返回第1页
             // perpage	number	每页显示条数，为空默认每页6条
             var pageCurrent = 1
+
             function getArticle() {
 
                 $.ajax({
@@ -159,7 +181,7 @@
                         page: pageCurrent,
                     }, //数据可以写对象
                     success: function (backData) {
-                        // console.log(backData);
+                        console.log(backData);
                         var html = template('article', backData) //回调函数
                         $('tbody').html(html) //模板插入位置
                         //把总页数放到 最后一页 的标签内保存起来，方便取 总页数 属性
@@ -167,6 +189,8 @@
                     },
                 })
             }
+
+
             //默认执行一次
             getArticle()
 
@@ -196,6 +220,25 @@
                 e.preventDefault()
                 getArticle()
             })
+
+
+            // 删除文章
+            // 请求地址：http://localhost:8000/admin/article_delete
+            // 请求方式：get
+            // 请求参数：id
+            window.deleteTr = function (id) {
+                $.ajax({
+                    url: 'http://localhost:8000/admin/article_delete',
+                    data: {
+                        id: id
+                    },
+                    success: function (backData) {
+                        alert(backData.msg)
+                        getArticle()
+                    },
+                })
+            }
+
         })
     </script>
 </body>
