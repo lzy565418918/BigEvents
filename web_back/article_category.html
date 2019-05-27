@@ -160,7 +160,7 @@
     <script>
         $(function () {
             //获取文章类型
-            // 请求地址：https://autumnfish.cn/big32/admin/category_search
+            // 请求地址：http://localhost:8000/admin/category_search
 
             // 请求方式：get
 
@@ -168,7 +168,7 @@
             //把获取文章类名封装成函数
             function getClassName() {
                 $.ajax({
-                    url: 'https://autumnfish.cn/big32/admin/category_search', //接口地址
+                    url: 'http://localhost:8000/admin/category_search', //接口地址
                     type: 'GET', //请求的方法POST/GET
                     dataType: 'json',
                     success: function (backData) {
@@ -190,7 +190,7 @@
                 $('#model_add').text('新增')
 
                 //新增文章分类
-                // 请求地址：https://autumnfish.cn/big32/admin/category_add
+                // 请求地址：http://localhost:8000/admin/category_add
                 // 请求方式：post
                 // 请求参数
                 // name	string	类别名称
@@ -204,7 +204,7 @@
 
                     //调用接口，添加文章类名别名
                     $.ajax({
-                        url: 'https://autumnfish.cn/big32/admin/category_add', //接口地址
+                        url: 'http://localhost:8000/admin/category_add', //接口地址
                         data: {
                             name: name,
                             slug: slug
@@ -228,7 +228,7 @@
 
 
             // 删除文章类别
-            // 请求地址：https://autumnfish.cn/big32/admin/·
+            // 请求地址：http://localhost:8000/admin/·
             // 请求方式：post
             // 请求参数：id	number	类别id
 
@@ -252,7 +252,7 @@
                     $('.my-confirm').off('click').on('click', function () {
                         //调用删除文章类别接口
                         $.ajax({
-                            url: 'https://autumnfish.cn/big32/admin/category_delete', //接口地址
+                            url: 'http://localhost:8000/admin/category_delete', //接口地址
                             data: {
                                 id: id_delete
                             }, //数据可以写对象
@@ -270,7 +270,7 @@
                     var bj = e.target
                     //添加文章类别编辑功能
                     // 编辑文章类别
-                    // 请求地址：https://autumnfish.cn/big32/admin/category_edit
+                    // 请求地址：http://localhost:8000/admin/category_edit
                     // 请求方式：post
                     // 请求参数：id name slug
                     // 
@@ -306,7 +306,7 @@
                         //调用接口
                         $.ajax({
 
-                            url: 'https://autumnfish.cn/big32/admin/category_edit', //接口地址
+                            url: 'http://localhost:8000/admin/category_edit', //接口地址
                             data: {
                                 name: name,
                                 slug: slug,

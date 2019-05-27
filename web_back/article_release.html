@@ -102,7 +102,7 @@
 </body>
 <script>
     //   发布文章
-    // 请求地址：https://autumnfish.cn/big32/admin/article_publish
+    // 请求地址：http://localhost:8000/admin/article_publish
     // 请求方式：post
     // 请求参数：
     // title	string	文章标题
@@ -139,7 +139,7 @@
             console.log($('form')[0]);
             //修改用户
             $.ajax({
-                url: 'https://autumnfish.cn/big32/admin/article_publish', //接口地址
+                url: 'http://localhost:8000/admin/article_publish', //接口地址
                 data: formData,
                 type: 'post', //请求的方法POST/GET
                 contentType: false,
@@ -154,21 +154,21 @@
 
         $('.btn-save').on('click', function (e) {
             console.log(1);
-
             e.preventDefault()
             var formData = new FormData($('form')[0])
             console.log($('form')[0]);
             //修改用户
             $.ajax({
-                url: 'https://autumnfish.cn/big32/admin/article_publish', //接口地址
-                data: formData, //数据可以写对象
+                url: 'http://localhost:8000/admin/article_publish', //接口地址
+                //传输表单数据
+                data: formData, 
                 type: 'post', //请求的方法POST/GET
+                //取消默认请求头
                 contentType: false,
+                //取消自动转换字符串
                 processData: false,
                 success: function (backData) {
                     console.log(backData);
-                    $('.modal-body').text(backData.msg)
-                    $('#myModal').modal()
                 },
             })
         })

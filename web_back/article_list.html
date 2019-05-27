@@ -279,7 +279,7 @@
 
     <script>
         // 文章搜索
-        // 请求地址：https://autumnfish.cn/big32/admin/search
+        // 请求地址：http://localhost:8000/admin/search
         // 请求方式：get
         // 请求参数：
         // key	    string	搜索关键词，可以为空，为空返回某类型所有文章
@@ -289,7 +289,7 @@
         // perpage	number	每页显示条数，为空默认每页6条
         $(function () {
             $.ajax({
-                url: 'https://autumnfish.cn/big32/admin/search', //接口地址
+                url: 'http://localhost:8000/admin/search', //接口地址
                 data: {
                     
                 }, //数据可以写对象

@@ -142,7 +142,7 @@
         $('.icon-tuichu').parent().on('click', function () {
 
             $.ajax({
-                url: 'https://autumnfish.cn/big32/admin/logout', //接口地址
+                url: 'http://localhost:8000/admin/logout', //接口地址
                 type: 'POST', //请求的方法POST/GET
                 dataType: 'json',
                 success: function (backData) {
@@ -158,7 +158,7 @@
         // 请求方式：get
 
         $.ajax({
-         url:'https://autumnfish.cn/big32/admin/getuser',//接口地址
+         url:'http://localhost:8000/admin/getuser',//接口地址
           type:'GET',//请求的方法POST/GET
           dataType: 'json',
         success:function(backData){
