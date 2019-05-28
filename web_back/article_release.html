@@ -42,11 +42,11 @@
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
                         <select class="form-control" name="pid">
-                            <option>1</option>
+                            <!-- <option>1</option>
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
-                            <option>5</option>
+                            <option>5</option> -->
                         </select>
                     </div>
                 </div>
@@ -67,7 +67,8 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label" style="cursor: text">文章内容：</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" id="rich_content" name="content" placeholder="文章内容">在页面中textarea框里输入的东西怎么用JQ获取啊啊啊</textarea>
+                        <textarea class="form-control" id="rich_content" name="content"
+                            placeholder="文章内容">在页面中textarea框里输入的东西怎么用JQ获取啊啊啊</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -100,6 +101,12 @@
     </div>
 
 </body>
+<script src="./js/template-web.js"></script>
+<script id="tem"  type="text/html">
+{{each data v}}
+<option value="{{v.id}}">{{v.name}}</option>
+{{/each}}
+</script>
 <script>
     //   发布文章
     // 请求地址：http://localhost:8000/admin/article_publish
@@ -111,6 +118,20 @@
     // date	    string	日期
     // content	string	文章内容
     $(function () {
+
+        //获取文章类型
+        // 请求地址：http://localhost:8000/admin/category_search
+        // 请求方式：get
+        // 请求参数：无
+        $.ajax({
+            url: 'http://localhost:8000/admin/category_search', //接口地址
+            success: function (backData) {
+                var html = template('tem', backData) //回调函数
+                $('.form-control').html(html) //模板插入位置
+            },
+        })
+
+
         //  var title = $('.title')
 
 
@@ -131,8 +152,8 @@
         //发布文章
         $('.btn-push').on('click', function (e) {
             console.log(1);
-//             var txt=$('textarea').text()
-// console.log(txt);
+            //             var txt=$('textarea').text()
+            // console.log(txt);
 
             e.preventDefault()
             var formData = new FormData($('form')[0])
@@ -161,7 +182,7 @@
             $.ajax({
                 url: 'http://localhost:8000/admin/article_publish', //接口地址
                 //传输表单数据
-                data: formData, 
+                data: formData,
                 type: 'post', //请求的方法POST/GET
                 //取消默认请求头
                 contentType: false,
