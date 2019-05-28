@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" name="pid">
+                        <select class="form-control" name="type">
                             <!-- <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -55,7 +55,8 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput" name="date">
+                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput" name="date"
+                                disabled>
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -67,8 +68,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label" style="cursor: text">文章内容：</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" id="rich_content" name="content"
-                            placeholder="文章内容">在页面中textarea框里输入的东西怎么用JQ获取啊啊啊</textarea>
+                        <textarea class="form-control" id="rich_content" placeholder="文章内容"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -102,21 +102,12 @@
 
 </body>
 <script src="./js/template-web.js"></script>
-<script id="tem"  type="text/html">
-{{each data v}}
-<option value="{{v.id}}">{{v.name}}</option>
-{{/each}}
+<script id="tem" type="text/html">
+    {{each data v}}
+    <option value="{{v.id}}">{{v.name}}</option>
+    {{/each}}
 </script>
 <script>
-    //   发布文章
-    // 请求地址：http://localhost:8000/admin/article_publish
-    // 请求方式：post
-    // 请求参数：
-    // title	string	文章标题
-    // cover	file	文章封面图片
-    // pid	    number	文章类型id
-    // date	    string	日期
-    // content	string	文章内容
     $(function () {
 
         //获取文章类型
@@ -132,13 +123,16 @@
         })
 
 
-        //  var title = $('.title')
-
-
-        //  var cover = 
-        //  var pid = 
-        //  var date = 
-        //  var content = 
+        //   发布文章
+        // 请求地址：http://localhost:8000/admin/article_publish
+        // 请求方式：post
+        // 请求参数：
+        // title	string	文章标题
+        // cover	file	文章封面图片
+        // type	    number	文章类型id
+        // date	    string	日期
+        // content	string	文章内容
+        // state    string  发布状态
         $('#exampleInputFile').change(function () {
             // console.log(this.files);
             //files是文件类型的一个属性
@@ -149,16 +143,20 @@
             $('.article_cover').attr('src', url).show()
         })
 
+
+
+
+
         //发布文章
         $('.btn-push').on('click', function (e) {
             console.log(1);
-            //             var txt=$('textarea').text()
-            // console.log(txt);
-
             e.preventDefault()
             var formData = new FormData($('form')[0])
+            formData.append('content', tinyMCE.activeEditor.getContent())
+            formData.append('state', '已发布')
             console.log($('form')[0]);
-            //修改用户
+            console.log(formData);
+            //发布文章
             $.ajax({
                 url: 'http://localhost:8000/admin/article_publish', //接口地址
                 data: formData,
@@ -171,25 +169,30 @@
                     $('#myModal').modal()
                 },
             })
+
         })
 
+
+        //把文章存为草稿
         $('.btn-save').on('click', function (e) {
             console.log(1);
             e.preventDefault()
             var formData = new FormData($('form')[0])
+            formData.append('content', tinyMCE.activeEditor.getContent())
+            formData.append('state', '草稿')
             console.log($('form')[0]);
-            //修改用户
+            //存草稿文章
+
             $.ajax({
                 url: 'http://localhost:8000/admin/article_publish', //接口地址
-                //传输表单数据
                 data: formData,
                 type: 'post', //请求的方法POST/GET
-                //取消默认请求头
                 contentType: false,
-                //取消自动转换字符串
                 processData: false,
                 success: function (backData) {
                     console.log(backData);
+                    $('.modal-body').text(backData.msg)
+                    $('#myModal').modal()
                 },
             })
         })
