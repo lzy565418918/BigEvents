@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/template-web.js"></script>
 </head>
 
 <body>
@@ -59,8 +61,8 @@
                 当前位置： <a href="#">首页</a> &gt; <a href="#">科技</a> &gt; 文章详情
             </div>
             <h3 class="article_title">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</h3>
-            <div class="article_info">杰克 发布于 2019-05-08 07:08:46&nbsp;&nbsp;&nbsp;分类: 奇趣事&nbsp;&nbsp;&nbsp;阅读:
-                (98)&nbsp;&nbsp;&nbsp;评论: (0)</div>
+            <!-- <div class="article_info">杰克 发布于 2019-05-08 07:08:46&nbsp;&nbsp;&nbsp;分类: 奇趣事&nbsp;&nbsp;&nbsp;阅读:
+                (98)&nbsp;&nbsp;&nbsp;评论: (0)</div> -->
             <div class="article_con">
 
                 <p>“上天入地”还不够？硅谷“钢铁侠”马斯克名下一家低调的公司最近又融了一大笔钱。</p>
@@ -205,6 +207,45 @@
         <p>电话：0755-****888 粤ICP备*******8号</p>
     </div>
 
+
+    <script id="tem" type="text/html">
+        {{data.author}} 发布于 {{data.date}} 分类:
+        奇趣事 阅读: ({{data.read}}) 评论: ({{data.comment}})
+    </script>
+
+
+    <script>
+        // 文章详细内容
+        // 请求地址：http://localhost:8000/admin/search
+        // 请求方式：get
+        // 请求参数：
+        // id	string	文章id
+        // var id = window.location.search
+        // console.log(id);
+        // 1.实例化ajax对象 (小黄人对象)
+        $(function () {
+            // 获取id  window.location.search ->?id=232
+            var id = window.location.search.split('=')[1]
+            $.ajax({
+                url: 'http://localhost:8000/admin/search',
+                data: {
+                    id: id
+                },
+                success: function (backData) {
+                    // console.log(backData)
+                    // 标题
+                    $('.article_title').text(backData.data.title)
+                    // 信息
+                    $(".article_info").html(template('tem', backData))
+                    // 内容
+                    $(".article_con").html(backData.data.content)
+                    // 添加图片
+                    $('<img src="" alt="">').attr('src', backData.data.cover).appendTo(
+                        '.article_con')
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>
